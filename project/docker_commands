@@ -1,11 +1,37 @@
 ## Docker commands used to build the application 
 # TODO: insert the docker build command
-
+docker build -t training .
+docker tag training mixkyle/training:techtrends
 ## Docker commands used to run the application
 # TODO: insert the docker run command
-
+docker run -d -p 7111:3111 mixkyle/training:techtrends
 ## Docker commands used to get the application logs
 # TODO: insert the docker logs command
-
+docker logs -f 8ccec4e72f8a
+docker cp 8ccec4e72f8a:/app/app.log .
 ## Logs from the container running the TechTrends application
 # TODO: paste logs from the Docker container 
+WARNING:werkzeug: * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+INFO:werkzeug: * Running on http://172.17.0.2:3111/ (Press CTRL+C to quit)
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:14:56] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:14:56] "GET /static/css/main.css HTTP/1.1" 200 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:14:56] "GET /favicon.ico HTTP/1.1" 404 -
+INFO:app:2022-08-13 02:38:56 Article "2020 CNCF Annual Report" retrieved!
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:24] "GET /1 HTTP/1.1" 1 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:24] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:32] "GET /healthz HTTP/1.1" 200 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:37] "GET /metrics HTTP/1.1" 200 -
+INFO:app:2022-08-13 02:38:56 Article "KubeCon + CloudNativeCon 2021" retrieved!
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:44] "GET /2 HTTP/1.1" 2 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:44] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:2022-08-13 05:33:32 Article "Training" retrieved!
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:46] "GET /7 HTTP/1.1" 3 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:46] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:52] "GET /create HTTP/1.1" 200 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:15:52] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:The new article "Docker test" has been created!
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:16:06] "POST /create HTTP/1.1" 302 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:16:06] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:16:06] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:172.17.0.1 - - [13/Aug/2022 06:16:11] "GET /metrics HTTP/1.1" 200 -
