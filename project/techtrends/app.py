@@ -1,8 +1,9 @@
 import sqlite3
-
+import logging
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 
+value=0
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
@@ -23,6 +24,15 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
 # Define the main route of the web application 
+@app.route('/healthz')
+def healthz():
+    response = app.response_class(
+            response=json.dumps({"result":"Ok - healthy"}),
+            status=200,
+            mimetype='application/json'
+            )
+    return response
+
 @app.route('/')
 def index():
     connection = get_db_connection()
@@ -35,14 +45,30 @@ def index():
 @app.route('/<int:post_id>')
 def post(post_id):
     post = get_post(post_id)
+    app.logger.info(post[1] + ' Article "' + post[2] + '" retrieved!')
     if post is None:
       return render_template('404.html'), 404
     else:
-      return render_template('post.html', post=post)
+      global value
+      value +=1
+      return render_template('post.html', post=post),value
+
+@app.route('/metrics')
+def metrics():
+    connection = get_db_connection()
+    posts_num = connection.execute('SELECT count(*) FROM posts').fetchone()
+    connection.close()
+    response = app.response_class(
+            response=json.dumps({"db_connection_count":value, "post_count":posts_num[0]}),
+            status=200,
+            mimetype='application/json'
+            )
+    return response
 
 # Define the About Us page
 @app.route('/about')
 def about():
+    app.logger.info('The "About Us" page is retrieved.')
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -60,11 +86,11 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-
+            app.logger.info('The new article "'+ title +'" has been created!')
             return redirect(url_for('index'))
-
     return render_template('create.html')
 
 # start the application on port 3111
 if __name__ == "__main__":
+   logging.basicConfig(filename='app.log',level=logging.DEBUG)
    app.run(host='0.0.0.0', port='3111')
