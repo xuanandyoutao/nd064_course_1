@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: techtrends-prod
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: argocd/prod
+    repoURL: https://github.com/xuanandyoutao/TechTrends
+    targetRevision: HEAD
+  syncPolicy: {}
